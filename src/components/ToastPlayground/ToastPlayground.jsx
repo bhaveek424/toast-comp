@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ToastContext } from '../ToastProvider/ToastProvider';
+import { ToastContext } from '../ToastProvider';
 import Button from '../Button';
 import ToastShelf from '../ToastShelf';
 
@@ -10,6 +10,7 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
 function ToastPlayground() {
   const { createToast } = React.useContext(ToastContext);
+
   const [message, setMessage] = React.useState('');
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
 
@@ -17,8 +18,8 @@ function ToastPlayground() {
     event.preventDefault();
 
     createToast(message, variant);
-    setMessage('');
 
+    setMessage('');
     setVariant(VARIANT_OPTIONS[0]);
   }
 
@@ -28,6 +29,7 @@ function ToastPlayground() {
         <img alt="Cute toast mascot" src="/toast.png" />
         <h1>Toast Playground</h1>
       </header>
+
       <ToastShelf />
 
       <form className={styles.controlsWrapper} onSubmit={handleCreateToast}>
@@ -42,6 +44,7 @@ function ToastPlayground() {
             <textarea
               id="message"
               className={styles.messageInput}
+              value={message}
               onChange={(event) => {
                 setMessage(event.target.value);
               }}
@@ -54,6 +57,7 @@ function ToastPlayground() {
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
             {VARIANT_OPTIONS.map((option) => {
               const id = `variant-${option}`;
+
               return (
                 <label key={id} htmlFor={id}>
                   <input
@@ -70,8 +74,6 @@ function ToastPlayground() {
                 </label>
               );
             })}
-
-            {/* TODO Other Variant radio buttons here */}
           </div>
         </div>
 

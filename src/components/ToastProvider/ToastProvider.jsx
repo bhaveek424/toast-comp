@@ -1,15 +1,20 @@
 import React from 'react';
-import useEscapeKey from '../../hooks/use-escape-key';
+
+import useKeydown from '../../hooks/use-keydown';
 
 export const ToastContext = React.createContext();
 
 function ToastProvider({ children }) {
   const [toasts, setToasts] = React.useState([
-    { message: 'oh no', variant: 'success', id: crypto.randomUUID() },
     {
+      id: crypto.randomUUID(),
+      message: 'It works!',
+      variant: 'success',
+    },
+    {
+      id: crypto.randomUUID(),
       message: 'Logged in',
       variant: 'success',
-      id: crypto.randomUUID(),
     },
   ]);
 
@@ -17,13 +22,18 @@ function ToastProvider({ children }) {
     setToasts([]);
   }, []);
 
-  useEscapeKey(handleEscape);
+  useKeydown('Escape', handleEscape);
 
   function createToast(message, variant) {
     const nextToasts = [
       ...toasts,
-      { id: crypto.randomUUID(), variant, message },
+      {
+        id: crypto.randomUUID(),
+        message,
+        variant,
+      },
     ];
+
     setToasts(nextToasts);
   }
 
@@ -33,6 +43,7 @@ function ToastProvider({ children }) {
     });
     setToasts(nextToasts);
   }
+
   return (
     <ToastContext.Provider value={{ toasts, createToast, dismissToast }}>
       {children}
